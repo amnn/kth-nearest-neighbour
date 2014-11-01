@@ -1,9 +1,10 @@
 (defproject knn "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.6.0"]]
+  :description "An implementation of the kth nearest neighbour, in Clojure.
+               Specialised to R^2, using a quadtree to store the training
+               data."
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [org.clojure/data.priority-map "0.0.5"]]
+
   :main ^:skip-aot knn.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
