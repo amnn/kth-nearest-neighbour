@@ -31,3 +31,17 @@
   [sample k]
   (-> (reduce qt/insert (qt/quad-tree) sample)
       (classify k)))
+
+(defn empirical-error
+  "Indicates the experimental error of the classifier created from the
+  `train` data against the `test` data, using the `k` nearest neighbours
+  algorithm."
+  [k train test]
+  (let [N (double (count test))
+        h (sample->hyp train k)]
+    (/ (reduce (fn [err [pos lab]]
+                 (if (not= (h pos) lab)
+                   (inc err)
+                   err))
+               0 test)
+       N)))
