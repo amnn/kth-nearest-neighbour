@@ -13,3 +13,21 @@
       (doall (map #(vector (read-string (str \[ % \]))
                            (read-string %2))
                   pos-lines lab-lines)))))
+
+(defn classify
+  "Given a quad tree describing the environment, create a function that
+  classifies new positions with a label."
+  [qt k]
+  (fn [pos]
+    (->> (qt/k-nn qt pos k)
+         (map #(-> % key last))
+         frequencies
+         (apply max-key val)
+         key)))
+
+(defn sample->hyp
+  "Take a sample and convert it into a hypothesis function using the kth
+  nearest neighbour algorithm."
+  [sample k]
+  (-> (reduce qt/insert (qt/quad-tree) sample)
+      (classify k)))
