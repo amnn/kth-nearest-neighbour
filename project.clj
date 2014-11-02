@@ -3,6 +3,8 @@
                Specialised to R^2, using a quadtree to store the training
                data."
   :dependencies [[org.clojure/clojure "1.6.0"]
+                 [incanter/incanter-core "1.5.5"]
+                 [incanter/incanter-charts "1.5.5"]
                  [org.clojure/data.priority-map "0.0.5"]]
 
   :main ^:skip-aot knn.core
