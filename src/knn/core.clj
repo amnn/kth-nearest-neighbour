@@ -1,5 +1,6 @@
 (ns knn.core
-  (:require [clojure.java.io :refer [reader]]
+  (:require [incanter.distributions :refer [draw]]
+            [clojure.java.io :refer [reader]]
             [knn.quad-tree :as qt]))
 
 (defn read-sample
@@ -19,11 +20,15 @@
   classifies new positions with a label."
   [qt k]
   (fn [pos]
-    (->> (qt/k-nn qt pos k)
-         (map #(-> % key last))
-         frequencies
-         (apply max-key val)
-         key)))
+    (let [{pos 1.0 neg -1.0
+           :or {pos 0 neg 0}}
+          (->> (qt/k-nn qt pos k)
+               (map #(-> % key last))
+               frequencies)]
+      (cond
+        (= pos neg) (draw [1.0 -1.0])
+        (< pos neg) -1.0
+        (> pos neg)  1.0))))
 
 (defn sample->hyp
   "Take a sample and convert it into a hypothesis function using the kth
